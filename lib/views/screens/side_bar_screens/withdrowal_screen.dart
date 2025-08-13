@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class Withdrowal extends StatelessWidget {
-  const Withdrowal({super.key});
+class WithdrowalScreen extends StatelessWidget {
+  static const String routeName = '\WithdrowalScreen';
 
   @override
   Widget build(BuildContext context) {

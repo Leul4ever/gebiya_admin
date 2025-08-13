@@ -1,8 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_admin_scaffold/admin_scaffold.dart';
+import 'package:gebiya_web_admin/views/screens/side_bar_screens/categories_screen.dart';
 import 'package:gebiya_web_admin/views/screens/side_bar_screens/dashboard_screen.dart';
+import 'package:gebiya_web_admin/views/screens/side_bar_screens/orders_screen.dart';
+import 'package:gebiya_web_admin/views/screens/side_bar_screens/product_screen.dart';
+import 'package:gebiya_web_admin/views/screens/side_bar_screens/upload_banner_screen.dart';
 import 'package:gebiya_web_admin/views/screens/side_bar_screens/vendors_screen.dart';
+import 'package:gebiya_web_admin/views/screens/side_bar_screens/withdrowal_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -24,6 +29,33 @@ class _MainScreenState extends State<MainScreen> {
         setState(() {
           _selectedItem = VendorsScreen();
         });
+        break;
+      case WithdrowalScreen.routeName:
+        setState(() {
+          _selectedItem = WithdrowalScreen();
+        });
+        break;
+      case OrdersScreen.routeName:
+        setState(() {
+          _selectedItem = OrdersScreen();
+        });
+        break;
+      case CategoriesScreen.routeName:
+        setState(() {
+          _selectedItem = CategoriesScreen();
+        });
+        break;
+      case ProductScreen.routeName:
+        setState(() {
+          _selectedItem = ProductScreen();
+        });
+        break;
+      case UploadBannerScreen.routeName:
+        setState(() {
+          _selectedItem = UploadBannerScreen();
+        });
+
+        break;
     }
   }
 
@@ -32,10 +64,25 @@ class _MainScreenState extends State<MainScreen> {
     return AdminScaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.yellow.shade900,
-        title: const Text("Management System"),
+        backgroundColor: Colors.blue.shade900,
+        title: const Text(" Gebiya Admin Panel"),
       ),
       sideBar: SideBar(
+        header: Container(
+          height: 50,
+          width: double.infinity,
+          color: const Color(0xff444444),
+          child: const Center(
+            child: Text(
+              'Header',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
         items: const [
           AdminMenuItem(
             title: 'Dashboard',
@@ -49,40 +96,49 @@ class _MainScreenState extends State<MainScreen> {
           ),
           AdminMenuItem(
             title: 'Withdrowal ',
-            route: '/',
+            route: WithdrowalScreen.routeName,
             icon: CupertinoIcons.money_dollar,
           ),
           AdminMenuItem(
             title: 'Orders ',
-            route: '/',
+            route: OrdersScreen.routeName,
             icon: CupertinoIcons.shopping_cart,
           ),
           AdminMenuItem(
             title: 'Category  ',
-            route: '/',
+            route: CategoriesScreen.routeName,
             icon: Icons.category,
           ),
           AdminMenuItem(
             title: 'Product ',
-            route: '/',
+            route: ProductScreen.routeName,
             icon: Icons.shop,
           ),
           AdminMenuItem(
             title: 'Upload Banners ',
-            route: '/',
+            route: UploadBannerScreen.routeName,
             icon: CupertinoIcons.add,
           ),
         ],
-        selectedRoute: '/',
+        selectedRoute: DashboardScreen.routeName,
         onSelected: (item) {
-          setState(() {
-            // The error is because 'selectedRoute' is not defined in this class.
-            // To fix, you should define a variable in _MainScreenState:
-            // String selectedRoute = '/';
-            // Then, this assignment will work.
-            // For now, you can comment this out or define the variable as shown above.
-          });
+          screenSelector(item);
         },
+        footer: Container(
+          height: 50,
+          width: double.infinity,
+          color: const Color(0xff444444),
+          child: const Center(
+            child: Text(
+              'Footer',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       ),
       body: _selectedItem,
     );
