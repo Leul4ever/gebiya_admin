@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:gebiya_web_admin/views/screens/main_screen.dart';
 
 void main() async {
@@ -33,6 +34,7 @@ class MyApp extends StatelessWidget {
        primarySwatch: Colors.blue
       ),
       home: const MainScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }

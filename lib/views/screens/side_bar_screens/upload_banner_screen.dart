@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class UploadBannerScreen extends StatefulWidget {
   static const String routeName = '/UploadBannerScreen';
@@ -31,14 +32,20 @@ class _UploadBannerScreenState extends State<UploadBannerScreen> {
 
   _uploadToFireStore() async {
     if (_image != null) {
-      String imageUrl = _UploadBannersTOStorage(_image);
+      EasyLoading.show();
+      final String imageUrl = await _UploadBannersTOStorage(_image);
       await _firestore.collection('Banners').doc(fileName).set({
         'image': imageUrl,
+      }).whenComplete(() {
+        EasyLoading.dismiss();
+        setState(() {
+          _image = null;
+        });
       });
     }
   }
 
-  _UploadBannersTOStorage(dynamic image) async {
+  Future<String> _UploadBannersTOStorage(dynamic image) async {
     Reference ref = _storage.ref().child('Banners').child(fileName!);
     UploadTask uploadTask = ref.putData(image);
     TaskSnapshot snapshot = await uploadTask;
