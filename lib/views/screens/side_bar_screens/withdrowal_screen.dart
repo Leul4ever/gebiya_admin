@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class WithdrowalScreen extends StatelessWidget {
-  static const String routeName = '\WithdrowalScreen';
+  static const String routeName = '/WithdrowalScreen';
 
   @override
   Widget build(BuildContext context) {

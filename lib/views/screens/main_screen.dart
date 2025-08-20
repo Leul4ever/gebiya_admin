@@ -124,21 +124,6 @@ class _MainScreenState extends State<MainScreen> {
         onSelected: (item) {
           screenSelector(item);
         },
-        footer: Container(
-          height: 50,
-          width: double.infinity,
-          color: const Color(0xff444444),
-          child: const Center(
-            child: Text(
-              'Footer',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
       ),
       body: _selectedItem,
     );

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ProductScreen extends StatelessWidget {
-   static const String routeName = '\ ProductScreen';
+   static const String routeName = '/ProductScreen';
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

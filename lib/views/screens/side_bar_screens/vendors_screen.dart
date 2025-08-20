@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class VendorsScreen extends StatelessWidget {
-  static const String routeName = '\VendorssScreen';
+  static const String routeName = '/VendorssScreen';
    
    @override
   Widget build(BuildContext context) {
