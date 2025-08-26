@@ -1,12 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-class CategoriesScreen extends StatelessWidget {
+class CategoriesScreen extends StatefulWidget {
   static const String routeName = '/CategoriesScreen';
+
+  @override
+  State<CategoriesScreen> createState() => _CategoriesScreenState();
+}
+
+class _CategoriesScreenState extends State<CategoriesScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  uploadCategory() {
+
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  dynamic _image;
+  late String categoryName;
+  String? fileName;
+
+  _pickImage() async {
+    FilePickerResult? result = await FilePicker.platform
+        .pickFiles(allowMultiple: false, type: FileType.image);
+    fileName = result?.files.first.name;
+    if (result != null) {
+      setState(() {
+        _image = result.files.first.bytes;
+      });
+    }
+  }
+
+  _uploadCategoryBannerToStorage(dynamic image) async {
+    Reference ref = _storage.ref().child('CategoryImages').child(fileName!);
+    UploadTask uploadTask = ref.putData(image);
+    TaskSnapshot snapshot = await uploadTask;
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
+
+  uploadCategory()  async{
     if (_formKey.currentState!.validate()) {
-      print("Good Guy ");
+     
+     
+      String imageUrl= await  _uploadCategoryBannerToStorage(_image);
+      
+      
+
+      
     } else {
       print("Bad guy ");
     }
@@ -23,7 +65,7 @@ class CategoriesScreen extends StatelessWidget {
               alignment: Alignment.topLeft,
               padding: const EdgeInsets.all(10),
               child: const Text(
-                ' Categories ',
+                ' Category ',
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontSize: 36,
@@ -45,16 +87,23 @@ class CategoriesScreen extends StatelessWidget {
                           border: Border.all(color: Colors.grey.shade800),
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: Center(
-                          child: Text("Categories"),
-                        ),
+                        child: _image != null
+                            ? Image.memory(
+                                _image,
+                                fit: BoxFit.cover,
+                              )
+                            : Center(
+                                child: Text("Categories"),
+                              ),
                       ),
                       const SizedBox(height: 20),
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.yellow.shade900,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          _pickImage();
+                        },
                         child: const Text("Upload Image"),
                       ),
                     ],
@@ -64,6 +113,9 @@ class CategoriesScreen extends StatelessWidget {
                   child: SizedBox(
                       width: 200,
                       child: TextFormField(
+                          onChanged: (value) {
+                            categoryName = value;
+                          },
                           validator: (value) {
                             if (value!.isEmpty) {
                               return 'Please Category name must not be Empty';
