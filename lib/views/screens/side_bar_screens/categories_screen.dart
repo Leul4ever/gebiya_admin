@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static const String routeName = '/CategoriesScreen';
@@ -13,7 +13,6 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
   final FirebaseStorage _storage = FirebaseStorage.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -40,15 +39,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return downloadUrl;
   }
 
-  uploadCategory()  async{
+  uploadCategory() async {
+    EasyLoading.show();
     if (_formKey.currentState!.validate()) {
-     
-     
-      String imageUrl= await  _uploadCategoryBannerToStorage(_image);
-      
-      
-
-      
+      String imageUrl = await _uploadCategoryBannerToStorage(_image);
+      await _firestore.collection('Categories').doc(fileName).set({
+        'categoryName': categoryName,
+        'image': imageUrl,
+      }).whenComplete(() {
+        EasyLoading.dismiss();
+        setState(() {
+          _image = null;
+          _formKey.currentState!.reset();
+        });
+      });
+      ;
     } else {
       print("Bad guy ");
     }
@@ -140,6 +145,21 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 ),
               ],
             ),
+            Divider(color: Colors.grey),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text('Categories',
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                      )),
+                ),
+              ),
+            )
           ],
         ),
       ),
