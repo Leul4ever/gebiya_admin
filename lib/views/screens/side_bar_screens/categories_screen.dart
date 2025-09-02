@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:gebiya_web_admin/views/screens/side_bar_screens/widgets/category_widget.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static const String routeName = '/CategoriesScreen';
@@ -159,7 +160,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       )),
                 ),
               ),
-            )
+            ),
+            const SizedBox(height: 8),
+            const CategoryWidget(),
           ],
         ),
       ),
